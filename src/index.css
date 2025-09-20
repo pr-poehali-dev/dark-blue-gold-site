@@ -115,13 +115,15 @@
 
 @layer components {
   .game-card {
-    @apply bg-navy-800/80 backdrop-blur-sm border border-gold-950/30 rounded-xl p-6 hover-scale transition-all duration-300;
+    @apply bg-navy-800/80 backdrop-blur-sm border border-gold-950/30 rounded-xl p-6 transition-all duration-300;
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+    transform: scale(1);
   }
 
   .game-card:hover {
     box-shadow: 0 8px 30px rgba(255, 215, 0, 0.2);
     border-color: rgba(255, 215, 0, 0.5);
+    transform: scale(1.05);
   }
 
   .section-title {
