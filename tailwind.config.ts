@@ -76,17 +76,17 @@ export default {
 					950: '#020617',
 				},
 				'gold': {
-					50: '#fffbeb',
-					100: '#fef3c7',
-					200: '#fde68a',
-					300: '#fcd34d',
-					400: '#fbbf24',
-					500: '#f59e0b',
-					600: '#d97706',
-					700: '#b45309',
-					800: '#92400e',
-					900: '#78350f',
-					950: '#ffd700',
+					50: '#fefdf8',
+					100: '#fef9e7',
+					200: '#fef2d1',
+					300: '#fde8a7',
+					400: '#fcda6b',
+					500: '#fbcc42',
+					600: '#f4b92a',
+					700: '#e8a020',
+					800: '#c5831d',
+					900: '#a1691c',
+					950: '#f7e98e',
 				},
 			},
 			borderRadius: {
@@ -100,8 +100,7 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'navy-gold': 'linear-gradient(135deg, #0f1419 0%, #1a237e 50%, #ffd700 100%)',
-				'gold-navy': 'linear-gradient(135deg, #ffd700 0%, #1a237e 50%, #0f1419 100%)',
+				'vintage-border': 'url("data:image/svg+xml,%3Csvg width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'vintage\' patternUnits=\'userSpaceOnUse\' width=\'100\' height=\'100\'%3E%3Cpath d=\'M50 10c5 0 10 2 12 5l8 8c2 3 7 5 12 5s10-2 12-5l8-8c2-3 7-5 12-5\' stroke=\'%23f7e98e\' stroke-width=\'1\' fill=\'none\' opacity=\'0.3\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'url(%23vintage)\'/%3E%3C/svg%3E")',
 			},
 			keyframes: {
 				'accordion-down': {

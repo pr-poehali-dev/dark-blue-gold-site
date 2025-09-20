@@ -99,7 +99,7 @@
 
   body {
     @apply bg-background text-foreground font-opensans;
-    background: linear-gradient(135deg, #0f1419 0%, #1a237e 50%, #0f1419 100%);
+    background: #1a237e;
     min-height: 100vh;
   }
 
@@ -154,12 +154,85 @@
 
   .section-title {
     @apply text-3xl md:text-4xl font-montserrat font-bold text-gold-950 mb-8;
-    background: linear-gradient(135deg, #ffd700, #f59e0b);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     opacity: 0;
     animation: fade-in-down 0.8s ease-out forwards;
+  }
+
+  .vintage-frame {
+    position: relative;
+    padding: 2rem;
+    border: 3px solid #f7e98e;
+    border-radius: 20px;
+    box-shadow:
+      0 0 0 1px #fbcc42,
+      0 0 0 5px #f7e98e,
+      inset 0 0 0 1px #fbcc42,
+      0 8px 32px rgba(247, 233, 142, 0.15);
+  }
+
+  .vintage-frame::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 2px solid #f7e98e;
+    border-radius: 25px;
+    opacity: 0.5;
+    z-index: -1;
+  }
+
+  .vintage-frame::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid #fbcc42;
+    border-radius: 15px;
+    opacity: 0.3;
+    z-index: -1;
+  }
+
+  .vintage-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f7e98e;
+  }
+
+  .vintage-corner.top-left {
+    top: -3px;
+    left: -3px;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 8px 0 0 0;
+  }
+
+  .vintage-corner.top-right {
+    top: -3px;
+    right: -3px;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 8px 0 0;
+  }
+
+  .vintage-corner.bottom-left {
+    bottom: -3px;
+    left: -3px;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 0 8px;
+  }
+
+  .vintage-corner.bottom-right {
+    bottom: -3px;
+    right: -3px;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 8px 0;
   }
 
   @keyframes fade-in-down {

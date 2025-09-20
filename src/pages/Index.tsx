@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -6,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [currentQuiz, setCurrentQuiz] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [showQuizResult, setShowQuizResult] = useState(false);
@@ -135,28 +137,116 @@ const Index = () => {
       {/* Hero Section */}
       <section className="py-20 text-center">
         <div className="container mx-auto px-4">
-          <h2 className="text-5xl md:text-7xl font-montserrat font-bold text-gold-950 mb-6">
-            Развлекательная Зона
-          </h2>
-          <p className="text-xl text-gold-200 mb-8 max-w-2xl mx-auto">
-            Игры, квизы и видео с QR-переходами. Сканируй, играй, побеждай!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              className="bg-gold-950 text-navy-900 hover:bg-gold-800 px-8 py-3 text-lg transition-transform hover:scale-105"
-              onClick={() => document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <Icon name="Play" size={24} className="mr-2" />
-              Начать игру
-            </Button>
-            <Button 
-              variant="outline" 
-              className="border-gold-950 text-gold-950 hover:bg-gold-950/10 px-8 py-3 text-lg transition-transform hover:scale-105"
-              onClick={() => document.getElementById('quizzes')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <Icon name="Brain" size={24} className="mr-2" />
-              Пройти квиз
-            </Button>
+          <div className="vintage-frame max-w-4xl mx-auto bg-navy-800/30">
+            <div className="vintage-corner top-left"></div>
+            <div className="vintage-corner top-right"></div>
+            <div className="vintage-corner bottom-left"></div>
+            <div className="vintage-corner bottom-right"></div>
+            <h2 className="text-5xl md:text-7xl font-montserrat font-bold text-gold-950 mb-6">
+              Развлекательная Зона
+            </h2>
+            <p className="text-xl text-gold-200 mb-8 max-w-2xl mx-auto">
+              Игры, квизы и видео с QR-переходами. Сканируй, играй, побеждай!
+            </p>
+          </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                className="bg-gold-950 text-navy-900 hover:bg-gold-800 px-8 py-3 text-lg transition-transform hover:scale-105"
+                onClick={() => document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Icon name="Play" size={24} className="mr-2" />
+                Начать игру
+              </Button>
+              <Button 
+                variant="outline" 
+                className="border-gold-950 text-gold-950 hover:bg-gold-950/10 px-8 py-3 text-lg transition-transform hover:scale-105"
+                onClick={() => document.getElementById('quizzes')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Icon name="Brain" size={24} className="mr-2" />
+                Пройти квиз
+              </Button>
+              <Button 
+                className="bg-gold-800 text-navy-900 hover:bg-gold-700 px-8 py-3 text-lg transition-transform hover:scale-105"
+              >
+                <Icon name="Plus" size={24} className="mr-2" />
+                Создать контент
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Admin Panel Section */}
+      <section className="py-16 bg-navy-900/30">
+        <div className="container mx-auto px-4">
+          <h3 className="section-title text-center animate-on-scroll">Панель Управления</h3>
+          
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Card className="game-card vintage-frame">
+              <div className="vintage-corner top-left"></div>
+              <div className="vintage-corner top-right"></div>
+              <div className="vintage-corner bottom-left"></div>
+              <div className="vintage-corner bottom-right"></div>
+              <CardHeader className="text-center">
+                <Icon name="FileVideo" size={48} className="text-gold-950 mx-auto mb-4" />
+                <CardTitle className="text-gold-950">Добавить Видео</CardTitle>
+                <CardDescription className="text-gold-200">
+                  Создайте новую видео-страницу с QR-кодом
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Button 
+                  className="bg-gold-950 text-navy-900 hover:bg-gold-800 w-full"
+                  onClick={() => navigate('/create-video')}
+                >
+                  <Icon name="Plus" size={20} className="mr-2" />
+                  Создать видео
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="game-card vintage-frame">
+              <div className="vintage-corner top-left"></div>
+              <div className="vintage-corner top-right"></div>
+              <div className="vintage-corner bottom-left"></div>
+              <div className="vintage-corner bottom-right"></div>
+              <CardHeader className="text-center">
+                <Icon name="Brain" size={48} className="text-gold-950 mx-auto mb-4" />
+                <CardTitle className="text-gold-950">Создать Квиз</CardTitle>
+                <CardDescription className="text-gold-200">
+                  Разработайте интерактивный квиз
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Button 
+                  className="bg-gold-950 text-navy-900 hover:bg-gold-800 w-full"
+                  onClick={() => navigate('/create-quiz')}
+                >
+                  <Icon name="Plus" size={20} className="mr-2" />
+                  Создать квиз
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="game-card vintage-frame">
+              <div className="vintage-corner top-left"></div>
+              <div className="vintage-corner top-right"></div>
+              <div className="vintage-corner bottom-left"></div>
+              <div className="vintage-corner bottom-right"></div>
+              <CardHeader className="text-center">
+                <Icon name="Gamepad2" size={48} className="text-gold-950 mx-auto mb-4" />
+                <CardTitle className="text-gold-950">Новая Игра</CardTitle>
+                <CardDescription className="text-gold-200">
+                  Добавьте мини-игру в коллекцию
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Button className="bg-gold-950 text-navy-900 hover:bg-gold-800 w-full">
+                  <Icon name="Plus" size={20} className="mr-2" />
+                  Создать игру
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -167,7 +257,11 @@ const Index = () => {
           <h3 className="section-title text-center animate-on-scroll">Интерактивные Квизы</h3>
           
           <div className="max-w-2xl mx-auto">
-            <Card className="game-card">
+            <Card className="game-card vintage-frame">
+              <div className="vintage-corner top-left"></div>
+              <div className="vintage-corner top-right"></div>
+              <div className="vintage-corner bottom-left"></div>
+              <div className="vintage-corner bottom-right"></div>
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-gold-950 flex items-center">
