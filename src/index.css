@@ -1,38 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 240 100% 3%;
+    --foreground: 48 100% 88%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 240 100% 6%;
+    --card-foreground: 48 100% 88%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 240 100% 6%;
+    --popover-foreground: 48 100% 88%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 48 100% 50%;
+    --primary-foreground: 240 100% 3%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 230 45% 20%;
+    --secondary-foreground: 48 100% 88%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 230 35% 15%;
+    --muted-foreground: 48 40% 70%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 48 100% 50%;
+    --accent-foreground: 240 100% 3%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 230 35% 20%;
+    --input: 230 35% 15%;
+    --ring: 48 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -96,6 +98,54 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-opensans;
+    background: linear-gradient(135deg, #0f1419 0%, #1a237e 50%, #0f1419 100%);
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-montserrat font-semibold;
+  }
+}
+
+@layer components {
+  .game-card {
+    @apply bg-navy-800/80 backdrop-blur-sm border border-gold-950/30 rounded-xl p-6 hover-scale transition-all duration-300;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+  }
+
+  .game-card:hover {
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-montserrat font-bold text-gold-950 mb-8;
+    background: linear-gradient(135deg, #ffd700, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .qr-button {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-gold-950 text-navy-900 rounded-lg font-medium hover:bg-gold-800 transition-colors;
+  }
+
+  .nav-link {
+    @apply text-gold-200 hover:text-gold-950 transition-colors duration-200 relative;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gold-950 transition-all duration-300;
+    content: "";
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
   }
 }
