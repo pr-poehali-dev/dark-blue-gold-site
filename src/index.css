@@ -118,6 +118,8 @@
     @apply bg-navy-800/80 backdrop-blur-sm border border-gold-950/30 rounded-xl p-6 transition-all duration-300;
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
     transform: scale(1);
+    opacity: 0;
+    animation: slide-up 0.6s ease-out forwards;
   }
 
   .game-card:hover {
@@ -126,12 +128,73 @@
     transform: scale(1.05);
   }
 
+  .game-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .game-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .game-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .game-card:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .section-title {
     @apply text-3xl md:text-4xl font-montserrat font-bold text-gold-950 mb-8;
     background: linear-gradient(135deg, #ffd700, #f59e0b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    opacity: 0;
+    animation: fade-in-down 0.8s ease-out forwards;
+  }
+
+  @keyframes fade-in-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-1 {
+    transition-delay: 0.1s;
+  }
+  .stagger-2 {
+    transition-delay: 0.2s;
+  }
+  .stagger-3 {
+    transition-delay: 0.3s;
+  }
+  .stagger-4 {
+    transition-delay: 0.4s;
   }
 
   .qr-button {

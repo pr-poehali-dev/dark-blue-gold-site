@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,36 @@ const Index = () => {
   const [currentQuiz, setCurrentQuiz] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [showQuizResult, setShowQuizResult] = useState(false);
+  const [visibleSection, setVisibleSection] = useState('');
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '-50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setVisibleSection(entry.target.id);
+          entry.target.classList.add('animate-fade-in');
+          
+          // Анимация элементов внутри секции
+          const animateElements = entry.target.querySelectorAll('.animate-on-scroll');
+          animateElements.forEach((el, index) => {
+            setTimeout(() => {
+              el.classList.add('visible');
+            }, index * 100);
+          });
+        }
+      });
+    }, observerOptions);
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
 
   const quizQuestions = [
     {
@@ -63,9 +93,36 @@ const Index = () => {
               </h1>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#quizzes" className="nav-link">Квизы</a>
-              <a href="#videos" className="nav-link">Видео</a>
-              <a href="#games" className="nav-link">Игры</a>
+              <a 
+                href="#quizzes" 
+                className={`nav-link ${visibleSection === 'quizzes' ? 'text-gold-950 after:w-full' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('quizzes')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Квизы
+              </a>
+              <a 
+                href="#videos" 
+                className={`nav-link ${visibleSection === 'videos' ? 'text-gold-950 after:w-full' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('videos')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Видео
+              </a>
+              <a 
+                href="#games" 
+                className={`nav-link ${visibleSection === 'games' ? 'text-gold-950 after:w-full' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Игры
+              </a>
             </div>
             <Button className="qr-button">
               <Icon name="QrCode" size={20} className="mr-2" />
@@ -85,11 +142,18 @@ const Index = () => {
             Игры, квизы и видео с QR-переходами. Сканируй, играй, побеждай!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-gold-950 text-navy-900 hover:bg-gold-800 px-8 py-3 text-lg">
+            <Button 
+              className="bg-gold-950 text-navy-900 hover:bg-gold-800 px-8 py-3 text-lg transition-transform hover:scale-105"
+              onClick={() => document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <Icon name="Play" size={24} className="mr-2" />
               Начать игру
             </Button>
-            <Button variant="outline" className="border-gold-950 text-gold-950 hover:bg-gold-950/10 px-8 py-3 text-lg">
+            <Button 
+              variant="outline" 
+              className="border-gold-950 text-gold-950 hover:bg-gold-950/10 px-8 py-3 text-lg transition-transform hover:scale-105"
+              onClick={() => document.getElementById('quizzes')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <Icon name="Brain" size={24} className="mr-2" />
               Пройти квиз
             </Button>
@@ -100,7 +164,7 @@ const Index = () => {
       {/* Quiz Section */}
       <section id="quizzes" className="py-16 bg-navy-900/50">
         <div className="container mx-auto px-4">
-          <h3 className="section-title text-center">Интерактивные Квизы</h3>
+          <h3 className="section-title text-center animate-on-scroll">Интерактивные Квизы</h3>
           
           <div className="max-w-2xl mx-auto">
             <Card className="game-card">
@@ -179,7 +243,7 @@ const Index = () => {
       {/* Video Section */}
       <section id="videos" className="py-16">
         <div className="container mx-auto px-4">
-          <h3 className="section-title text-center">Видео Контент</h3>
+          <h3 className="section-title text-center animate-on-scroll">Видео Контент</h3>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -202,7 +266,7 @@ const Index = () => {
                 category: "Наука"
               }
             ].map((video, index) => (
-              <Card key={index} className="game-card group">
+              <Card key={index} className={`game-card group animate-on-scroll stagger-${index + 1}`}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -245,7 +309,7 @@ const Index = () => {
       {/* Games Section */}
       <section id="games" className="py-16 bg-navy-900/50">
         <div className="container mx-auto px-4">
-          <h3 className="section-title text-center">Мини-Игры</h3>
+          <h3 className="section-title text-center animate-on-scroll">Мини-Игры</h3>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -278,7 +342,7 @@ const Index = () => {
                 icon: "Link"
               }
             ].map((game, index) => (
-              <Card key={index} className="game-card group cursor-pointer">
+              <Card key={index} className={`game-card group cursor-pointer animate-on-scroll stagger-${index + 1}`}>
                 <CardHeader className="text-center">
                   <div className="w-16 h-16 bg-gold-950/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-gold-950/30 transition-colors">
                     <Icon name={game.icon as any} size={32} className="text-gold-950" />
