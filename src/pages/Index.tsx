@@ -149,29 +149,29 @@ const Index = () => {
               Игры, квизы и видео с QR-переходами. Сканируй, играй, побеждай!
             </p>
           </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                className="bg-gold-950 text-navy-900 hover:bg-gold-800 px-8 py-3 text-lg transition-transform hover:scale-105"
-                onClick={() => document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <Icon name="Play" size={24} className="mr-2" />
-                Начать игру
-              </Button>
-              <Button 
-                variant="outline" 
-                className="border-gold-950 text-gold-950 hover:bg-gold-950/10 px-8 py-3 text-lg transition-transform hover:scale-105"
-                onClick={() => document.getElementById('quizzes')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <Icon name="Brain" size={24} className="mr-2" />
-                Пройти квиз
-              </Button>
-              <Button 
-                className="bg-gold-800 text-navy-900 hover:bg-gold-700 px-8 py-3 text-lg transition-transform hover:scale-105"
-              >
-                <Icon name="Plus" size={24} className="mr-2" />
-                Создать контент
-              </Button>
-            </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+            <Button 
+              className="bg-gold-950 text-navy-900 hover:bg-gold-800 px-8 py-3 text-lg transition-transform hover:scale-105"
+              onClick={() => document.getElementById('games')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <Icon name="Play" size={24} className="mr-2" />
+              Начать игру
+            </Button>
+            <Button 
+              variant="outline" 
+              className="border-gold-950 text-gold-950 hover:bg-gold-950/10 px-8 py-3 text-lg transition-transform hover:scale-105"
+              onClick={() => document.getElementById('quizzes')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <Icon name="Brain" size={24} className="mr-2" />
+              Пройти квиз
+            </Button>
+            <Button 
+              className="bg-gold-800 text-navy-900 hover:bg-gold-700 px-8 py-3 text-lg transition-transform hover:scale-105"
+            >
+              <Icon name="Plus" size={24} className="mr-2" />
+              Создать контент
+            </Button>
           </div>
         </div>
       </section>
