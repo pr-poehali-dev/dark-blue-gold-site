@@ -14,8 +14,6 @@ const QRScanner = ({ onClose }: QRScannerProps) => {
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState('');
   const [scanResult, setScanResult] = useState('');
-  const [showPermissionRequest, setShowPermissionRequest] = useState(false);
-  const [permissionType, setPermissionType] = useState<'camera' | 'gallery'>('camera');
   const videoRef = useRef<HTMLVideoElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
@@ -28,28 +26,12 @@ const QRScanner = ({ onClose }: QRScannerProps) => {
     };
   }, []);
 
-  const requestCameraPermission = () => {
-    setPermissionType('camera');
-    setShowPermissionRequest(true);
+  const handleCameraClick = async () => {
+    await startCameraScanning();
   };
   
-  const requestGalleryPermission = () => {
-    setPermissionType('gallery');
-    setShowPermissionRequest(true);
-  };
-  
-  const handlePermissionGrant = async () => {
-    setShowPermissionRequest(false);
-    
-    if (permissionType === 'camera') {
-      await startCameraScanning();
-    } else {
-      fileInputRef.current?.click();
-    }
-  };
-  
-  const handlePermissionDeny = () => {
-    setShowPermissionRequest(false);
+  const handleGalleryClick = () => {
+    fileInputRef.current?.click();
   };
 
   const startCameraScanning = async () => {
@@ -188,40 +170,7 @@ const QRScanner = ({ onClose }: QRScannerProps) => {
             </div>
           )}
 
-          {showPermissionRequest ? (
-            <div className="space-y-6">
-              <div className="bg-navy-800/50 rounded-lg p-8 border border-gold-950/30 text-center">
-                <div className="w-20 h-20 bg-gold-950/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name={permissionType === 'camera' ? 'Camera' : 'Image'} size={40} className="text-gold-950" />
-                </div>
-                <h3 className="text-2xl text-gold-950 font-bold mb-3">
-                  {permissionType === 'camera' ? 'Доступ к камере' : 'Доступ к галерее'}
-                </h3>
-                <p className="text-gold-200 mb-6">
-                  {permissionType === 'camera' 
-                    ? 'Сайт запрашивает доступ к вашей камере для сканирования QR-кодов. Ваши данные не будут сохраняться или передаваться.'
-                    : 'Сайт запрашивает доступ к вашей галерее для выбора изображения с QR-кодом. Выбранные файлы не будут загружены на сервер.'}
-                </p>
-                <div className="flex gap-4">
-                  <Button 
-                    onClick={handlePermissionDeny}
-                    variant="outline"
-                    className="flex-1 border-gold-950 text-gold-950 hover:bg-gold-950/10"
-                  >
-                    <Icon name="X" size={20} className="mr-2" />
-                    Отменить
-                  </Button>
-                  <Button 
-                    onClick={handlePermissionGrant}
-                    className="flex-1 bg-gold-950 text-navy-900 hover:bg-gold-800"
-                  >
-                    <Icon name="Check" size={20} className="mr-2" />
-                    Разрешить
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ) : scanning ? (
+          {scanning ? (
             <div className="space-y-4">
               <div className="aspect-video bg-navy-800 rounded-lg overflow-hidden relative">
                 <video 
@@ -245,7 +194,7 @@ const QRScanner = ({ onClose }: QRScannerProps) => {
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               <Button 
-                onClick={requestCameraPermission}
+                onClick={handleCameraClick}
                 className="bg-gold-950 text-navy-900 hover:bg-gold-800 h-32 flex flex-col items-center justify-center"
               >
                 <Icon name="Camera" size={48} className="mb-2" />
@@ -253,7 +202,7 @@ const QRScanner = ({ onClose }: QRScannerProps) => {
               </Button>
 
               <Button 
-                onClick={requestGalleryPermission}
+                onClick={handleGalleryClick}
                 variant="outline"
                 className="border-gold-950 text-gold-950 hover:bg-gold-950/10 h-32 flex flex-col items-center justify-center"
               >
