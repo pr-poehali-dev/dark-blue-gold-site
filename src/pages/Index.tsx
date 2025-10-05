@@ -37,14 +37,36 @@ const Index = () => {
     const sections = document.querySelectorAll('section[id]');
     sections.forEach((section) => observer.observe(section));
     
+    loadContent();
+
+    return () => observer.disconnect();
+  }, []);
+
+  const loadContent = () => {
     const loadedVideos = JSON.parse(localStorage.getItem('videos') || '[]');
     setVideos(loadedVideos);
     
     const loadedQuizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
     setQuizzes(loadedQuizzes);
+  };
 
-    return () => observer.disconnect();
-  }, []);
+  const handleDeleteVideo = (e: React.MouseEvent, videoId: string) => {
+    e.stopPropagation();
+    if (confirm('Вы уверены, что хотите удалить это видео?')) {
+      const updatedVideos = videos.filter(v => v.id !== videoId);
+      localStorage.setItem('videos', JSON.stringify(updatedVideos));
+      setVideos(updatedVideos);
+    }
+  };
+
+  const handleDeleteQuiz = (e: React.MouseEvent, quizId: string) => {
+    e.stopPropagation();
+    if (confirm('Вы уверены, что хотите удалить этот квиз?')) {
+      const updatedQuizzes = quizzes.filter(q => q.id !== quizId);
+      localStorage.setItem('quizzes', JSON.stringify(updatedQuizzes));
+      setQuizzes(updatedQuizzes);
+    }
+  };
 
 
 
@@ -216,9 +238,17 @@ const Index = () => {
               {quizzes.map((quiz) => (
                 <Card 
                   key={quiz.id} 
-                  className="game-card cursor-pointer" 
+                  className="game-card cursor-pointer relative group" 
                   onClick={() => navigate(`/quiz/${quiz.id}`)}
                 >
+                  <Button
+                    size="icon"
+                    variant="destructive"
+                    className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-red-900 hover:bg-red-800"
+                    onClick={(e) => handleDeleteQuiz(e, quiz.id)}
+                  >
+                    <Icon name="Trash2" size={16} />
+                  </Button>
                   <CardHeader>
                     <CardTitle className="text-gold-950 text-lg mb-2 flex items-center">
                       <Icon name="Brain" size={20} className="mr-2" />
@@ -267,9 +297,17 @@ const Index = () => {
               {videos.map((video, index) => (
                 <Card 
                   key={video.id} 
-                  className="game-card cursor-pointer" 
+                  className="game-card cursor-pointer relative group" 
                   onClick={() => navigate(`/video/${video.id}`)}
                 >
+                  <Button
+                    size="icon"
+                    variant="destructive"
+                    className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-red-900 hover:bg-red-800"
+                    onClick={(e) => handleDeleteVideo(e, video.id)}
+                  >
+                    <Icon name="Trash2" size={16} />
+                  </Button>
                   <CardHeader>
                     <CardTitle className="text-gold-950 text-lg mb-2">
                       {video.title}
