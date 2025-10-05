@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import QRScanner from '@/components/QRScanner';
 
 const Index = () => {
   const navigate = useNavigate();
   const [visibleSection, setVisibleSection] = useState('');
   const [videos, setVideos] = useState<any[]>([]);
+  const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
     const observerOptions = {
@@ -86,7 +88,10 @@ const Index = () => {
                 Игры
               </a>
             </div>
-            <Button className="qr-button">
+            <Button 
+              className="qr-button"
+              onClick={() => setShowScanner(true)}
+            >
               <Icon name="QrCode" size={20} className="mr-2" />
               Сканировать
             </Button>
@@ -256,6 +261,8 @@ const Index = () => {
       </section>
 
 
+
+      {showScanner && <QRScanner onClose={() => setShowScanner(false)} />}
 
       {/* Footer */}
       <footer className="bg-navy-950 py-12 border-t border-gold-950/20">

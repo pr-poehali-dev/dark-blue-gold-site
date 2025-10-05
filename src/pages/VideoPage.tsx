@@ -115,46 +115,24 @@ const VideoPage = () => {
             <div className="vintage-corner bottom-right"></div>
             
             <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-2xl text-gold-950 mb-2">
-                    {videoData.title}
-                  </CardTitle>
-                  <CardDescription className="text-gold-200 text-lg">
-                    {videoData.description}
-                  </CardDescription>
-                  <div className="flex items-center space-x-4 mt-4">
-                    <Badge variant="secondary" className="bg-gold-950/20 text-gold-950">
-                      {videoData.category}
-                    </Badge>
-                    <span className="text-gold-200 flex items-center">
-                      <Icon name="Clock" size={16} className="mr-1" />
-                      {videoData.duration}
-                    </span>
-                    <span className="text-gold-200 flex items-center">
-                      <Icon name="Calendar" size={16} className="mr-1" />
-                      {new Date(videoData.createdAt).toLocaleDateString('ru-RU')}
-                    </span>
-                  </div>
-                </div>
-                <div className="ml-6 text-center">
-                  <img 
-                    src={generateQRCode(window.location.href)} 
-                    alt="QR код для видео"
-                    className="w-32 h-32 rounded border border-gold-950/50 mb-2 cursor-pointer hover:border-gold-950 transition-colors"
-                    onClick={downloadQRCode}
-                    title="Нажмите, чтобы скачать"
-                  />
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    className="border-gold-950 text-gold-950 hover:bg-gold-950/10 text-xs w-full"
-                    onClick={downloadQRCode}
-                  >
-                    <Icon name="Download" size={14} className="mr-1" />
-                    Скачать QR
-                  </Button>
-                </div>
+              <CardTitle className="text-2xl text-gold-950 mb-2">
+                {videoData.title}
+              </CardTitle>
+              <CardDescription className="text-gold-200 text-lg">
+                {videoData.description}
+              </CardDescription>
+              <div className="flex items-center space-x-4 mt-4">
+                <Badge variant="secondary" className="bg-gold-950/20 text-gold-950">
+                  {videoData.category}
+                </Badge>
+                <span className="text-gold-200 flex items-center">
+                  <Icon name="Clock" size={16} className="mr-1" />
+                  {videoData.duration}
+                </span>
+                <span className="text-gold-200 flex items-center">
+                  <Icon name="Calendar" size={16} className="mr-1" />
+                  {new Date(videoData.createdAt).toLocaleDateString('ru-RU')}
+                </span>
               </div>
             </CardHeader>
 
@@ -203,7 +181,7 @@ const VideoPage = () => {
                 )}
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div className="flex items-center space-x-4">
                   <Button
                     className="bg-gold-950 text-navy-900 hover:bg-gold-800"
@@ -211,6 +189,26 @@ const VideoPage = () => {
                   >
                     <Icon name="Share2" size={20} className="mr-2" />
                     Поделиться
+                  </Button>
+                </div>
+                
+                <div className="flex flex-col items-center">
+                  <p className="text-gold-950 font-medium mb-2 text-sm">QR-код для быстрого доступа</p>
+                  <img 
+                    src={generateQRCode(window.location.href)} 
+                    alt="QR код для видео"
+                    className="w-32 h-32 rounded border-2 border-gold-950/50 mb-2 cursor-pointer hover:border-gold-950 transition-colors"
+                    onClick={downloadQRCode}
+                    title="Нажмите, чтобы скачать"
+                  />
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="border-gold-950 text-gold-950 hover:bg-gold-950/10 text-xs"
+                    onClick={downloadQRCode}
+                  >
+                    <Icon name="Download" size={14} className="mr-1" />
+                    Скачать QR-код
                   </Button>
                 </div>
               </div>
