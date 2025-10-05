@@ -9,6 +9,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [visibleSection, setVisibleSection] = useState('');
   const [videos, setVideos] = useState<any[]>([]);
+  const [quizzes, setQuizzes] = useState<any[]>([]);
   const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
@@ -38,6 +39,9 @@ const Index = () => {
     
     const loadedVideos = JSON.parse(localStorage.getItem('videos') || '[]');
     setVideos(loadedVideos);
+    
+    const loadedQuizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
+    setQuizzes(loadedQuizzes);
 
     return () => observer.disconnect();
   }, []);
@@ -202,9 +206,50 @@ const Index = () => {
       <section id="quizzes" className="py-16 bg-navy-900/50">
         <div className="container mx-auto px-4">
           <h3 className="section-title text-center animate-on-scroll">Ваши Квизы</h3>
-          <p className="text-center text-gold-200 mt-4 max-w-2xl mx-auto">
-            Здесь будут отображаться созданные вами квизы. Нажмите "Создать квиз" выше, чтобы добавить первый квиз.
-          </p>
+          
+          {quizzes.length === 0 ? (
+            <p className="text-center text-gold-200 mt-4 max-w-2xl mx-auto">
+              Здесь будут отображаться созданные вами квизы. Нажмите "Создать квиз" выше, чтобы добавить первый квиз.
+            </p>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {quizzes.map((quiz) => (
+                <Card 
+                  key={quiz.id} 
+                  className="game-card cursor-pointer" 
+                  onClick={() => navigate(`/quiz/${quiz.id}`)}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-gold-950 text-lg mb-2 flex items-center">
+                      <Icon name="Brain" size={20} className="mr-2" />
+                      {quiz.title}
+                    </CardTitle>
+                    <CardDescription className="text-gold-200">
+                      {quiz.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        {quiz.category && (
+                          <span className="text-sm text-gold-200">
+                            {quiz.category}
+                          </span>
+                        )}
+                        <span className="text-sm text-gold-200 flex items-center">
+                          <Icon name="HelpCircle" size={16} className="mr-1" />
+                          {quiz.questions?.length || 0} вопросов
+                        </span>
+                      </div>
+                      <Button size="sm" className="qr-button">
+                        <Icon name="Play" size={16} />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
