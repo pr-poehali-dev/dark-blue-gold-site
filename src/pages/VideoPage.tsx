@@ -28,12 +28,30 @@ const VideoPage = () => {
   };
   
   const convertYouTubeUrl = (url: string) => {
-    // Конвертируем YouTube URL в embed формат
     const videoIdMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/);
     if (videoIdMatch && videoIdMatch[1]) {
       return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
     }
     return url;
+  };
+  
+  const downloadQRCode = async () => {
+    try {
+      const qrUrl = generateQRCode(window.location.href);
+      const response = await fetch(qrUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `qr-${videoData?.title || 'video'}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Ошибка скачивания QR-кода:', error);
+      alert('Не удалось скачать QR-код');
+    }
   };
 
   const handleShare = () => {
@@ -123,22 +141,66 @@ const VideoPage = () => {
                   <img 
                     src={generateQRCode(window.location.href)} 
                     alt="QR код для видео"
-                    className="w-24 h-24 rounded border border-gold-950/50 mb-2"
+                    className="w-32 h-32 rounded border border-gold-950/50 mb-2 cursor-pointer hover:border-gold-950 transition-colors"
+                    onClick={downloadQRCode}
+                    title="Нажмите, чтобы скачать"
                   />
-                  <p className="text-gold-200 text-xs">Поделиться QR</p>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="border-gold-950 text-gold-950 hover:bg-gold-950/10 text-xs w-full"
+                    onClick={downloadQRCode}
+                  >
+                    <Icon name="Download" size={14} className="mr-1" />
+                    Скачать QR
+                  </Button>
                 </div>
               </div>
             </CardHeader>
 
             <CardContent>
               <div className="aspect-video bg-navy-800 rounded-lg mb-6 relative overflow-hidden">
-                <iframe
-                  src={convertYouTubeUrl(videoData.videoUrl)}
-                  title={videoData.title}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                {videoData.videoUrl.includes('youtube.com') || videoData.videoUrl.includes('youtu.be') ? (
+                  <iframe
+                    src={convertYouTubeUrl(videoData.videoUrl)}
+                    title={videoData.title}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : videoData.videoUrl.includes('t.me') || videoData.videoUrl.includes('telegram') ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    <Icon name="Send" size={64} className="text-gold-950 mb-4" />
+                    <p className="text-gold-200 mb-4">Видео из Telegram</p>
+                    <Button 
+                      className="bg-gold-950 text-navy-900 hover:bg-gold-800"
+                      onClick={() => window.open(videoData.videoUrl, '_blank')}
+                    >
+                      <Icon name="ExternalLink" size={20} className="mr-2" />
+                      Открыть в Telegram
+                    </Button>
+                  </div>
+                ) : videoData.videoUrl.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                  <video 
+                    controls 
+                    className="w-full h-full"
+                    src={videoData.videoUrl}
+                  >
+                    Ваш браузер не поддерживает воспроизведение видео.
+                  </video>
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    <Icon name="Link" size={64} className="text-gold-950 mb-4" />
+                    <p className="text-gold-200 mb-4">Внешняя ссылка</p>
+                    <Button 
+                      className="bg-gold-950 text-navy-900 hover:bg-gold-800"
+                      onClick={() => window.open(videoData.videoUrl, '_blank')}
+                    >
+                      <Icon name="ExternalLink" size={20} className="mr-2" />
+                      Открыть ссылку
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-between">

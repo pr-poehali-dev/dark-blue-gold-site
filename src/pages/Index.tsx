@@ -7,6 +7,7 @@ import Icon from '@/components/ui/icon';
 const Index = () => {
   const navigate = useNavigate();
   const [visibleSection, setVisibleSection] = useState('');
+  const [videos, setVideos] = useState<any[]>([]);
 
   useEffect(() => {
     const observerOptions = {
@@ -20,7 +21,6 @@ const Index = () => {
           setVisibleSection(entry.target.id);
           entry.target.classList.add('animate-fade-in');
           
-          // Анимация элементов внутри секции
           const animateElements = entry.target.querySelectorAll('.animate-on-scroll');
           animateElements.forEach((el, index) => {
             setTimeout(() => {
@@ -33,6 +33,9 @@ const Index = () => {
 
     const sections = document.querySelectorAll('section[id]');
     sections.forEach((section) => observer.observe(section));
+    
+    const loadedVideos = JSON.parse(localStorage.getItem('videos') || '[]');
+    setVideos(loadedVideos);
 
     return () => observer.disconnect();
   }, []);
@@ -204,9 +207,51 @@ const Index = () => {
       <section id="videos" className="py-16">
         <div className="container mx-auto px-4">
           <h3 className="section-title text-center animate-on-scroll">Ваши Видео</h3>
-          <p className="text-center text-gold-200 mt-4 max-w-2xl mx-auto">
-            Здесь будут отображаться ваши видео. Нажмите "Создать видео" выше, чтобы добавить первое видео.
-          </p>
+          
+          {videos.length === 0 ? (
+            <p className="text-center text-gold-200 mt-4 max-w-2xl mx-auto">
+              Здесь будут отображаться ваши видео. Нажмите "Создать видео" выше, чтобы добавить первое видео.
+            </p>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {videos.map((video, index) => (
+                <Card 
+                  key={video.id} 
+                  className="game-card cursor-pointer" 
+                  onClick={() => navigate(`/video/${video.id}`)}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-gold-950 text-lg mb-2">
+                      {video.title}
+                    </CardTitle>
+                    <CardDescription className="text-gold-200">
+                      {video.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        {video.category && (
+                          <span className="text-sm text-gold-200">
+                            {video.category}
+                          </span>
+                        )}
+                        {video.duration && (
+                          <span className="text-sm text-gold-200 flex items-center">
+                            <Icon name="Clock" size={16} className="mr-1" />
+                            {video.duration}
+                          </span>
+                        )}
+                      </div>
+                      <Button size="sm" className="qr-button">
+                        <Icon name="Play" size={16} />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

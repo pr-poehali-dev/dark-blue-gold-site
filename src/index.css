@@ -101,6 +101,15 @@
     @apply bg-background text-foreground font-opensans;
     background: #1a237e;
     min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-x: hidden;
   }
 
   h1,

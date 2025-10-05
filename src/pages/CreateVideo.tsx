@@ -112,10 +112,13 @@ const CreateVideo = () => {
                     type="url"
                     value={formData.videoUrl}
                     onChange={(e) => handleChange('videoUrl', e.target.value)}
-                    placeholder="https://youtube.com/watch?v=..."
+                    placeholder="YouTube, Telegram или прямая ссылка на видео"
                     className="border-gold-950/30 focus:border-gold-950 bg-navy-800/50 text-gold-200"
                     required
                   />
+                  <p className="text-gold-200/70 text-xs mt-1">
+                    Поддерживается: YouTube, Telegram, прямые ссылки на .mp4/.webm/.ogg файлы
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
