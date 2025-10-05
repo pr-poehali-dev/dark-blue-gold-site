@@ -57,10 +57,21 @@ const CreateQuiz = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const fullQuizData = { ...quizData, questions };
-    console.log('Quiz data:', fullQuizData);
     
     const quizId = Date.now().toString();
+    const fullQuizData = {
+      id: quizId,
+      ...quizData,
+      questions,
+      createdAt: new Date().toISOString()
+    };
+    
+    // Сохраняем в localStorage
+    const existingQuizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
+    existingQuizzes.push(fullQuizData);
+    localStorage.setItem('quizzes', JSON.stringify(existingQuizzes));
+    
+    console.log('Quiz data:', fullQuizData);
     navigate(`/quiz/${quizId}`);
   };
 

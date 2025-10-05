@@ -16,34 +16,7 @@ const QuizPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   
-  const [quizData] = useState({
-    title: "Квиз по веб-технологиям",
-    description: "Проверьте свои знания в области современной веб-разработки",
-    category: "Технологии",
-    questions: [
-      {
-        question: "Какой язык программирования используется для создания интерактивных веб-страниц?",
-        options: ["HTML", "CSS", "JavaScript", "Python"],
-        correct: 2
-      },
-      {
-        question: "Что означает CSS?",
-        options: ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style Sheets", "Colorful Style Sheets"],
-        correct: 1
-      },
-      {
-        question: "Какой протокол используется для безопасной передачи данных в интернете?",
-        options: ["HTTP", "HTTPS", "FTP", "SMTP"],
-        correct: 1
-      },
-      {
-        question: "Что такое React?",
-        options: ["База данных", "Серверный язык", "JavaScript библиотека", "Операционная система"],
-        correct: 2
-      }
-    ] as Question[]
-  });
-
+  const [quizData, setQuizData] = useState<any>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -52,9 +25,15 @@ const QuizPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    // Загружаем данные из localStorage
+    const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
+    const quiz = quizzes.find((q: any) => q.id === id);
+    
+    if (quiz) {
+      setQuizData(quiz);
+    }
+    
+    setIsLoading(false);
   }, [id]);
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -111,6 +90,21 @@ const QuizPage = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-950 mx-auto mb-4"></div>
           <p className="text-gold-200">Загрузка квиза...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!quizData) {
+    return (
+      <div className="min-h-screen bg-navy-900 flex items-center justify-center">
+        <div className="text-center">
+          <Icon name="AlertCircle" size={48} className="text-gold-950 mx-auto mb-4" />
+          <h3 className="text-2xl text-gold-950 mb-4">Квиз не найден</h3>
+          <Button onClick={() => navigate('/')} className="bg-gold-950 text-navy-900 hover:bg-gold-800">
+            <Icon name="ArrowLeft" size={20} className="mr-2" />
+            Вернуться на главную
+          </Button>
         </div>
       </div>
     );
