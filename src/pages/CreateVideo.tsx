@@ -19,10 +19,20 @@ const CreateVideo = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Здесь будет логика сохранения видео
-    console.log('Video data:', formData);
-    // Перенаправляем на созданную страницу видео
+    
     const videoId = Date.now().toString();
+    const videoData = {
+      id: videoId,
+      ...formData,
+      createdAt: new Date().toISOString()
+    };
+    
+    // Сохраняем в localStorage
+    const existingVideos = JSON.parse(localStorage.getItem('videos') || '[]');
+    existingVideos.push(videoData);
+    localStorage.setItem('videos', JSON.stringify(existingVideos));
+    
+    console.log('Video data:', videoData);
     navigate(`/video/${videoId}`);
   };
 

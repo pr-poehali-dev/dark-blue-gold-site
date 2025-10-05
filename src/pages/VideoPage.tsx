@@ -8,28 +8,32 @@ import Icon from '@/components/ui/icon';
 const VideoPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [videoData, setVideoData] = useState({
-    title: "Гайд по веб-разработке",
-    description: "Подробное руководство по созданию современных веб-приложений с использованием React и TypeScript",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    category: "Обучение",
-    duration: "25:30",
-    views: 1247,
-    likes: 89,
-    createdAt: new Date().toLocaleDateString('ru-RU')
-  });
-  
+  const [videoData, setVideoData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Имитация загрузки данных
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    // Загружаем данные из localStorage
+    const videos = JSON.parse(localStorage.getItem('videos') || '[]');
+    const video = videos.find((v: any) => v.id === id);
+    
+    if (video) {
+      setVideoData(video);
+    }
+    
+    setIsLoading(false);
   }, [id]);
 
   const generateQRCode = (content: string) => {
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(content)}`;
+  };
+  
+  const convertYouTubeUrl = (url: string) => {
+    // Конвертируем YouTube URL в embed формат
+    const videoIdMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/);
+    if (videoIdMatch && videoIdMatch[1]) {
+      return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+    }
+    return url;
   };
 
   const handleShare = () => {
@@ -51,6 +55,21 @@ const VideoPage = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-950 mx-auto mb-4"></div>
           <p className="text-gold-200">Загрузка видео...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!videoData) {
+    return (
+      <div className="min-h-screen bg-navy-900 flex items-center justify-center">
+        <div className="text-center">
+          <Icon name="AlertCircle" size={48} className="text-gold-950 mx-auto mb-4" />
+          <h3 className="text-2xl text-gold-950 mb-4">Видео не найдено</h3>
+          <Button onClick={() => navigate('/')} className="bg-gold-950 text-navy-900 hover:bg-gold-800">
+            <Icon name="ArrowLeft" size={20} className="mr-2" />
+            Вернуться на главную
+          </Button>
         </div>
       </div>
     );
@@ -95,12 +114,8 @@ const VideoPage = () => {
                       {videoData.duration}
                     </span>
                     <span className="text-gold-200 flex items-center">
-                      <Icon name="Eye" size={16} className="mr-1" />
-                      {videoData.views} просмотров
-                    </span>
-                    <span className="text-gold-200 flex items-center">
-                      <Icon name="Heart" size={16} className="mr-1" />
-                      {videoData.likes}
+                      <Icon name="Calendar" size={16} className="mr-1" />
+                      {new Date(videoData.createdAt).toLocaleDateString('ru-RU')}
                     </span>
                   </div>
                 </div>
@@ -118,11 +133,11 @@ const VideoPage = () => {
             <CardContent>
               <div className="aspect-video bg-navy-800 rounded-lg mb-6 relative overflow-hidden">
                 <iframe
-                  src={videoData.videoUrl}
+                  src={convertYouTubeUrl(videoData.videoUrl)}
                   title={videoData.title}
                   className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  frameBorder="0"
                 />
               </div>
 
@@ -135,66 +150,12 @@ const VideoPage = () => {
                     <Icon name="Share2" size={20} className="mr-2" />
                     Поделиться
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="border-gold-950 text-gold-950 hover:bg-gold-950/10"
-                  >
-                    <Icon name="Heart" size={20} className="mr-2" />
-                    Нравится
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-gold-950 text-gold-950 hover:bg-gold-950/10"
-                  >
-                    <Icon name="Bookmark" size={20} className="mr-2" />
-                    Сохранить
-                  </Button>
-                </div>
-                <div className="text-gold-200 text-sm">
-                  Опубликовано: {videoData.createdAt}
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Похожие видео */}
-          <Card className="game-card vintage-frame">
-            <div className="vintage-corner top-left"></div>
-            <div className="vintage-corner top-right"></div>
-            <div className="vintage-corner bottom-left"></div>
-            <div className="vintage-corner bottom-right"></div>
-            
-            <CardHeader>
-              <CardTitle className="text-gold-950 flex items-center">
-                <Icon name="Video" size={24} className="mr-2" />
-                Похожие видео
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                {[
-                  { title: "Основы JavaScript", duration: "18:45", category: "Обучение" },
-                  { title: "CSS Grid Layout", duration: "12:20", category: "Дизайн" },
-                  { title: "React Hooks", duration: "22:15", category: "Обучение" }
-                ].map((video, index) => (
-                  <Card key={index} className="border border-gold-950/30 bg-navy-800/50 hover:bg-navy-800/70 transition-colors cursor-pointer">
-                    <CardContent className="p-4">
-                      <div className="aspect-video bg-navy-700 rounded mb-3 flex items-center justify-center">
-                        <Icon name="Play" size={32} className="text-gold-950" />
-                      </div>
-                      <h4 className="text-gold-950 font-medium mb-2">{video.title}</h4>
-                      <div className="flex items-center justify-between text-sm">
-                        <Badge variant="secondary" className="bg-gold-950/20 text-gold-950 text-xs">
-                          {video.category}
-                        </Badge>
-                        <span className="text-gold-200">{video.duration}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+
         </div>
       </div>
     </div>
